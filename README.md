@@ -2,6 +2,8 @@
 
 A physics-based space exploration game where you navigate between planets using realistic orbital mechanics.
 
+![Game Screenshot](game_view.png)
+
 ## Overview
 
 Experience the thrill of space travel as you pilot a spacecraft through a solar system filled with planets of varying masses and gravitational fields. Master the delicate balance between orbital velocity and escape velocity to journey from planet to planet - but stay within the screen boundaries and don't take too long to find a new orbit!
