@@ -1,58 +1,29 @@
-import math
+import pyxel
+from constants import GRAVITY_WEAK, GRAVITY_MEDIUM, GRAVITY_STRONG
 
 class Planet:
-    def __init__(self, x, y, radius, color):
+    def __init__(self, x, y, gravity_type):
         self.x = x
         self.y = y
-        self.radius = radius
-        self.color = color
-        # Mass proportional to radius^3 (volume)
-        self.mass = radius ** 3
-        # Gravitational constant (scaled for game - reduced for slower speeds)
-        self.G = 0.02
-    
-    def get_first_cosmic_velocity(self, orbit_radius):
-        """Calculate minimum orbital velocity (circular orbit)"""
-        return math.sqrt(self.G * self.mass / orbit_radius)
-    
-    def get_second_cosmic_velocity(self):
-        """Calculate escape velocity from planet surface"""
-        return math.sqrt(2 * self.G * self.mass / self.radius)
-    
-    def can_orbit(self, velocity, orbit_radius):
-        """Check if velocity allows stable orbit"""
-        v1 = self.get_first_cosmic_velocity(orbit_radius)
-        v2 = self.get_second_cosmic_velocity()
-        return v1 <= velocity < v2
-    
-    def get_orbit_radius_for_velocity(self, velocity):
-        """Calculate stable orbit radius for given velocity"""
-        # From circular orbit formula: v = sqrt(GM/r)
-        # Therefore: r = GM/v^2
-        if velocity <= 0:
-            return None
+        self.gravity_type = gravity_type
+        self.radius = 8
         
-        orbit_radius = (self.G * self.mass) / (velocity ** 2)
-        
-        # Ensure orbit is above planet surface
-        min_orbit_radius = self.radius + 10  # Minimum safe distance
-        return max(orbit_radius, min_orbit_radius)
+        if gravity_type == "weak":
+            self.gravity = GRAVITY_WEAK
+            self.color = 3  # Green
+            self.orbit_radius = 25
+        elif gravity_type == "medium":
+            self.gravity = GRAVITY_MEDIUM
+            self.color = 10  # Yellow
+            self.orbit_radius = 20
+        else:  # strong
+            self.gravity = GRAVITY_STRONG
+            self.color = 8  # Red
+            self.orbit_radius = 15
     
-    def get_stable_capture_parameters(self, velocity, current_distance):
-        """Get stable orbit parameters for capture at given velocity and distance"""
-        # Calculate ideal orbit radius for the velocity
-        ideal_radius = self.get_orbit_radius_for_velocity(velocity)
-        
-        # Use current distance if it's reasonable, otherwise use ideal radius
-        if current_distance >= self.radius + 10:
-            capture_radius = current_distance
+    def draw(self, is_visited=False):
+        if is_visited:
+            pyxel.circb(self.x, self.y, self.radius, self.color)
         else:
-            capture_radius = ideal_radius
-        
-        # Calculate required velocity for this orbit radius
-        required_velocity = self.get_first_cosmic_velocity(capture_radius)
-        
-        # Use the higher of current velocity or required velocity for stability
-        stable_velocity = max(velocity, required_velocity * 1.05)  # 5% safety margin
-        
-        return capture_radius, stable_velocity
+            pyxel.circ(self.x, self.y, self.radius, self.color)
+        pyxel.circb(self.x, self.y, self.orbit_radius, 1)  # Orbit line
