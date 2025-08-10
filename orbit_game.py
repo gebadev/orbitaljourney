@@ -250,7 +250,7 @@ class Game:
         else:
             player_color = 7 if self.player.in_stable_orbit else 8
         
-        pyxel.pset(int(self.player.x), int(self.player.y), player_color)
+        pyxel.circ(int(self.player.x), int(self.player.y), 2, player_color)
         
         # Display information
         if self.player.escaping:
