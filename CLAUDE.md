@@ -4,99 +4,89 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a 2D orbital mechanics game built with Pyxel, a Python game engine. The game features realistic physics-based orbital mechanics where a player spacecraft navigates between planets using proper orbital dynamics.
+A 2D space exploration game built with Python and Pyxel where you control an orbiter using planetary gravity fields to visit planets across multiple stages. The game features stage progression, score tracking, and different gravity types.
 
 ## Dependencies
 
-- **pyxel**: Python game development library for retro-style games
-- Install with: `pip install pyxel`
+- **pyxel**: Python game development library (version 2.4.10)
+- Install with: `pip install -r requirements.txt`
 
-## Running the Game
+## Common Commands
 
+### Running the Game
 ```bash
 python main.py
 ```
 
+### Installing Dependencies
+```bash
+pip install -r requirements.txt
+```
+
 ## Code Architecture
 
-### Core Classes (Modular Structure)
+### Core Classes
 
 1. **Planet** (`planet.py`): 
-   - Celestial bodies with position, radius, mass, color, and gravitational properties
-   - Calculates first cosmic velocity (minimum orbital speed)
-   - Calculates second cosmic velocity (escape velocity)
-   - Determines orbital stability and capture parameters
+   - Celestial bodies with position, radius, gravity strength, and color
+   - Three gravity types: weak (green), medium (yellow), strong (red)
+   - Orbit radius determined by gravity strength
 
-2. **Player** (`player.py`): 
-   - Spacecraft with orbital and escape trajectory physics
-   - Handles orbital mechanics, escape sequences, and planetary re-capture
-   - Manages falling/crashing states and escape timer
-   - Velocity-based orbital calculations
+2. **Orbiter** (`orbiter.py`): 
+   - Player orbiter that orbits planets and travels between them
+   - Tracks visited planets for stage progression
+   - Dynamic rotation direction based on approach angle
+   - Handles orbital mechanics and free-flight physics
 
 3. **Game** (`game.py`): 
-   - Main game controller with state management (title, playing, game_over)
-   - Camera system following player or planet
-   - Collision detection and game over conditions
-   - UI rendering and user input handling
+   - Main game controller with state management
+   - Stage progression system (advance when all planets visited)
+   - Score tracking and collision detection
+   - UI rendering and input handling
+
+4. **Constants** (`constants.py`):
+   - Screen dimensions and gravity strength values
+   - ORBITAL_SPEED constant for easy game tuning
 
 ### Key Systems
 
-- **Physics-Based Orbital Mechanics**: Real gravitational calculations using GM/r formulas
-- **Camera System**: Smooth following camera centered on current planet or escaping player
-- **Planet Generation**: 3-5 planets placed within screen bounds avoiding player orbit collision
-- **State Management**: Title screen, gameplay, and game over states
-- **Game Over Conditions**: 
-  - Screen boundary collision
-  - Planetary impact (speed too low)
-  - 5-second escape timeout
-- **Dynamic Orbit Capture**: Speed-based orbit radius calculation during planetary re-capture
+- **Stage Progression**: Complete stages by visiting all planets
+- **Gravity-Based Capture**: Orbiter captured when entering planet's orbit radius
+- **Dynamic Rotation**: Orbital direction determined by approach velocity vector
+- **Score System**: Points awarded only for visiting new planets
+- **Visual Feedback**: Visited planets show as outlines, unvisited as filled
 
 ### Game Flow
 
-1. Display title screen with controls and instructions
-2. Z/X key starts game initialization
-3. Generate starting planet (center screen, medium size)
-4. Generate additional planets avoiding player orbit
-5. Initialize player with stable orbital velocity (v1 × 1.2)
-6. Run state-based update/draw loop with camera following
-7. Handle orbital mechanics, escape physics, and re-capture
-8. Game over on boundary touch, crash, or timeout
-9. R key restarts from title
+1. Start with orbiter orbiting a random planet
+2. Press SPACE to leave orbit and travel in straight line
+3. Get captured by other planets' gravity fields
+4. Visit all planets to advance to next stage
+5. Game over on planet collision or screen boundary exit
 
 ## Development Notes
 
 ### Current Parameters
-- Game window: 256×256 pixels
-- Planet sizes: 3-12 pixel radius (reduced from original)
-- Starting planet: 5-10 pixel radius, centered position
-- Player orbit: planet radius + 20 pixels
-- Player visual: 2-pixel radius circle (enlarged from 1-pixel dot)
-- Gravitational constant: 0.02 (reduced for balanced gameplay)
-- Initial velocity: First cosmic velocity × 1.2 (ensures stable orbit)
-- Camera lerp speed: 0.1 (smooth following)
-- Escape timeout: 5 seconds
+- Screen: 256×192 pixels (SCREEN_WIDTH × SCREEN_HEIGHT)
+- Gravity strengths: 50 (weak), 80 (medium), 120 (strong)
+- Orbital speed: 0.12 radians per frame (configurable via ORBITAL_SPEED in constants.py)
+- Orbiter: 2-pixel radius white circle
 
 ### Physics Implementation
-- Circular orbit formula: v = √(GM/r)
-- Escape velocity: v = √(2GM/r)
-- Orbital stability check: v1 ≤ velocity < v2
-- Re-capture uses current escape velocity to determine new orbit radius
-- Gravitational acceleration during escape: a = GM/r² × 0.005
-
-### Visual Elements
-- Orbit path: Green (stable) / Red (unstable) circle outline
-- Player: White (stable) / Red (unstable) / Blinking (escaping)
-- Trail: Fading dots during escape trajectory
-- UI: Fixed-position velocity/status information
-- Game over: Semi-transparent dithered overlay
+- Simple orbital mechanics: fixed radius circular orbits
+- Velocity inheritance when leaving orbit based on orbital motion
+- Cross product calculation determines rotation direction
+- No complex gravitational physics - simplified arcade-style mechanics
 
 ### File Structure
 ```
-orbit3/
-├── main.py          # Entry point with game description
-├── game.py          # Main game class with state management
-├── player.py        # Player physics and mechanics
-├── planet.py        # Planet properties and orbital calculations
-├── CLAUDE.md        # This development guide
-└── README.md        # User-facing game documentation
+orbitaljourney/
+├── main.py          # Entry point
+├── game.py          # Main game logic and state management
+├── orbiter.py       # Orbiter physics and mechanics
+├── planet.py        # Planet properties and rendering
+├── constants.py     # Game configuration constants
+├── requirements.txt # Python dependencies
+├── sc01.png         # Game screenshot
+└── README.md        # User documentation
 ```

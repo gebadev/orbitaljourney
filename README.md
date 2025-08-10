@@ -1,144 +1,116 @@
 # Orbital Journey
 
-A physics-based space exploration game where you navigate between planets using realistic orbital mechanics.
+A 2D space exploration game built with Python and Pyxel where you control an orbiter using planetary gravity fields to visit planets across multiple stages.
 
-![Game Screenshot](game_view.png)
+![Game Screenshot](sc01.png)
 
-## Overview
+## Game Overview
 
-Experience the thrill of space travel as you pilot a spacecraft through a solar system filled with planets of varying masses and gravitational fields. Master the delicate balance between orbital velocity and escape velocity to journey from planet to planet - but stay within the screen boundaries and don't take too long to find a new orbit!
+Navigate through space using slingshot maneuvers around planets. Visit all planets in each stage to advance to the next level. Your goal is to achieve the highest score by visiting as many planets as possible across multiple stages.
 
-## Game Features
+## Features
 
-### Realistic Physics
-- **Gravitational mechanics**: Each planet has mass proportional to its volume (radius³)
-- **First cosmic velocity**: Minimum speed required for stable orbit
-- **Second cosmic velocity**: Escape velocity to leave planetary orbit
-- **Dynamic orbit capture**: Your escape speed determines your new orbit size
-- **Free flight physics**: Realistic space navigation with gravitational influences
+- **Realistic Orbital Mechanics**: Orbiter follows realistic orbital physics around planets
+- **Three Gravity Levels**: Planets have weak (green), medium (yellow), or strong (red) gravity fields
+- **Dynamic Rotation**: Orbital direction changes based on approach angle
+- **Stage Progression**: Complete stages by visiting all planets
+- **Visual Feedback**: Visited planets show as outlines, unvisited as filled circles
+- **Score Tracking**: Cumulative scoring across all stages
 
-### Gameplay Elements
-- **Title screen**: Press Z or X to start your orbital journey
-- **Orbital mechanics**: Maintain stable orbits around planets with precise velocity control
-- **Velocity control**: Use arrow keys to accelerate/decelerate in orbit or during escape
-- **Planet hopping**: Escape one planet's gravity to reach another
-- **Time pressure**: Find a new orbit within 5 seconds or face game over
-- **Boundary limits**: Stay within the screen boundaries to survive
-- **Visual feedback**: 
-  - Color-coded orbital stability indicators
-  - Real-time velocity, orbital data, and countdown display
-  - Trail effects during escape trajectories
-  - Smooth camera following your spacecraft
+## Controls
 
-### Controls
-- **Title Screen**: Z or X to start game
-- **↑ Arrow Key**: Accelerate (increase orbital velocity or apply forward thrust)
-- **↓ Arrow Key**: Decelerate (decrease orbital velocity or apply reverse thrust)
-- **Game Over Screen**: R to restart
+- **Space Key**: Leave current orbit / Start game (from title screen)
+- **Space Key**: Restart game (from game over screen)
 
-## How to Play
+## Gameplay
 
-1. **Title Screen**: Press Z or X to begin your orbital adventure
-2. **Start in stable orbit**: Begin orbiting a planet with safe initial velocity
-3. **Monitor your speed**: 
-   - Too slow = crash into planet (Game Over!)
-   - Perfect range = stable orbit (green circle)
-   - Too fast = escape to space
-4. **Navigate space**: When escaping, use thrust to navigate toward other planets
-   - **Time limit**: You have 5 seconds to reach another planet's orbit
-   - **Stay in bounds**: Don't let your spacecraft touch the screen edges
-5. **Get captured**: Approach other planets to enter their gravitational influence
-   - Your escape speed determines your new orbit size
-   - Higher speeds = larger orbits, lower speeds = closer orbits
-6. **Repeat the journey**: Continue exploring the solar system planet by planet
+1. **Start**: Your orbiter begins orbiting a random planet
+2. **Navigate**: Press Space to leave orbit and travel in a straight line
+3. **Capture**: Get captured by another planet's gravity field to enter its orbit
+4. **Progress**: Visit all planets to advance to the next stage
+5. **Survive**: Avoid colliding with planets or screen boundaries
 
 ## Game Over Conditions
 
-You'll face game over if:
-- **Screen Boundary Contact**: Your spacecraft touches the screen edges
-- **Planetary Crash**: Your velocity drops too low and you fall into a planet
-- **Escape Timeout**: You spend more than 5 seconds in free space without finding an orbit
-
-## Game States
-
-### Stable Orbit
-- **Green orbit circle** around your planet
-- **White player circle** (2-pixel radius)
-- Velocity within safe orbital range
-- Planet-centered camera view
-
-### Unstable Orbit Warning  
-- **Red orbit circle** indicating danger
-- Velocity approaching unsafe levels
-- Risk of planetary crash
-
-### Escape Trajectory
-- **Blinking player indicator** during flight
-- **Visible trail** showing your flight path
-- **Player-following camera** during escape
-- **Countdown timer** showing remaining time
-- Free flight through space with gravitational influences from all planets
-
-### Planetary Capture
-- **Automatic orbital insertion** when approaching planets
-- **Dynamic orbit calculation** based on your current escape velocity
-- **Smooth transition** from escape to orbital flight
+- Collision with a planet
+- Traveling outside the screen boundaries
 
 ## Installation
 
 ### Requirements
-- Python 3.6+
-- Pyxel game engine
+
+- Python 3.7+
+- Pyxel
 
 ### Setup
+
+1. Clone the repository:
 ```bash
-pip install pyxel
+git clone https://github.com/gebadev/orbitaljourney.git
+cd orbitaljourney
 ```
 
-### Run the Game
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+3. Run the game:
 ```bash
 python main.py
 ```
 
-## Educational Value
+## File Structure
 
-This game demonstrates key concepts in orbital mechanics:
-- **Conservation of energy and momentum** in orbital systems
-- **Gravitational field strength vs. distance** relationships
-- **Circular vs. escape velocity** calculations and practical application
-- **Multi-body gravitational systems** with realistic interactions
-- **Spacecraft trajectory planning** and orbital maneuvering
-- **Time-critical navigation** under physical constraints
+```
+orbital2/
+├── main.py          # Main entry point
+├── game.py          # Game class with main game logic
+├── orbiter.py       # Orbiter class
+├── planet.py        # Planet class
+├── constants.py     # Game constants
+├── requirements.txt # Python dependencies
+└── README.md       # This file
+```
 
-Perfect for students learning physics, aspiring astronauts, or anyone fascinated by space exploration!
+## Game Mechanics
 
-## Technical Details
+### Orbital Physics
+- Orbiter follows elliptical orbits around planets
+- Orbital radius depends on planet's gravity strength
+- Rotation direction determined by approach angle
 
-### Game Engine
-- Built with **Python** and **Pyxel** retro game engine
-- **256×256 pixel** retro-style graphics
-- **60 FPS** smooth gameplay with real-time physics
+### Gravity Types
+- **Weak Gravity (Green)**: Large orbital radius, easier to escape
+- **Medium Gravity (Yellow)**: Medium orbital radius
+- **Strong Gravity (Red)**: Small orbital radius, harder to escape
 
-### Physics Simulation
-- **Real gravitational calculations** using Newton's law of universal gravitation
-- **Circular orbit mechanics** with proper velocity-radius relationships  
-- **Multi-body gravitational influences** affecting escape trajectories
-- **Dynamic orbital insertion** based on approach velocity and angle
-- **Mass-based gravitational fields** (mass ∝ radius³)
+### Scoring System
+- Score increases only when visiting new planets
+- Revisiting planets doesn't add to score
+- Score accumulates across stages
 
-### Game Features
-- **Modular code architecture** with separated game logic
-- **State-based game management** (Title → Playing → Game Over)
-- **Smooth camera system** with interpolated following
-- **Procedural planet generation** with collision avoidance
-- **Physics-accurate orbital parameters** and velocity calculations
-- **Visual feedback systems** for orbital stability and trajectory
+## Development
 
-### Performance Optimizations
-- **Culling system** for off-screen object rendering
-- **Efficient collision detection** for planetary boundaries
-- **Optimized gravitational calculations** with reduced complexity for gameplay
+Built with:
+- **Python**: Core game logic
+- **Pyxel**: 2D game engine for graphics and input handling
+
+## License
+
+This project is open source. Feel free to contribute or modify as needed.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## Screenshots
+
+*Add screenshots of your game here when ready*
 
 ---
 
-🚀 *Master the art of orbital mechanics - Explore the cosmos, one orbit at a time!* 🌌
+Have fun exploring space! 🚀
