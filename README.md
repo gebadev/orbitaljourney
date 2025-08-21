@@ -107,10 +107,6 @@ This project is open source. Feel free to contribute or modify as needed.
 3. Make your changes
 4. Submit a pull request
 
-## Screenshots
-
-*Add screenshots of your game here when ready*
-
 ---
 
 Have fun exploring space! 🚀
